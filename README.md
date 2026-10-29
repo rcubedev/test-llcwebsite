@@ -94,10 +94,6 @@ them on request; `SiteExporter` (active only with the `export` profile, no web s
 renders the same list through the same Thymeleaf engine into files. So `bootRun` and the
 exported site produce identical HTML.
 
-Templates use plain `href="/..."` links rather than Thymeleaf's `@{...}`: context-relative `@{/x}` links need a web
-request (the export has none), and what `@{}` adds (a context path, session ids) doesn't apply to a site served at
-the domain root.
-
 ## SEO
 
 - Every page gets its own `<title>`, description, canonical link and Open Graph / Twitter tags from `PageMeta`

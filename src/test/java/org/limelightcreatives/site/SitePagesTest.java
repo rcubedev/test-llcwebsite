@@ -8,10 +8,13 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.thymeleaf.context.Context;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,6 +28,7 @@ class SitePagesTest {
 
     @Autowired MockMvc mvc;
     @Autowired SitePages pages;
+    @Autowired org.thymeleaf.spring6.SpringTemplateEngine templates;
     @LocalServerPort int port;
 
     @Test
@@ -91,6 +95,25 @@ class SitePagesTest {
         }
         assertThat(xml.split("<loc>", -1)).hasSize(pages.all().size() + 1);
         assertThat(xml).doesNotContain("/404");
+    }
+
+    @Test
+    void servedAndExportedHtmlAreIdentical() throws Exception {
+        // The export renders without a web request; the server renders with one. Both must give the same page.
+        for (SitePages.Page page : pages.all()) {
+            String exported = templates.process(page.template(), new Context(Locale.ENGLISH, page.model()));
+            assertThat(fetch(page.path()).body()).as(page.path()).isEqualTo(exported);
+        }
+    }
+
+    @Test
+    void pageLinksPointAtRealPages() throws Exception {
+        String home = fetch("/").body();
+        assertThat(home).contains("href=\"/\"", "href=\"/#contact\"", "href=\"/privacy\"",
+                "href=\"/code-of-conduct\"", "href=\"/safeguarding-policy\"");
+        for (String slug : new String[]{"privacy", "code-of-conduct", "safeguarding-policy"}) {
+            assertThat(pages.legal(slug)).as(slug).isPresent();
+        }
     }
 
     @Test

@@ -66,7 +66,7 @@
     <!-- Video polaroid, mobile/tablet: sits under the buttons -->
     <button th:replace="~{home/hero :: videoPolaroid(-2, 'pointer-events-auto mt-8 w-64 lg:hidden')}"></button>
 
-    <a class="pointer-events-auto mt-8" href="/#contact" data-open-sponsor><u>Interested in sponsoring?</u></a>
+    <a class="pointer-events-auto mt-8" th:href="@{~/#contact}" data-open-sponsor><u>Interested in sponsoring?</u></a>
   </div>
 </section>
 
