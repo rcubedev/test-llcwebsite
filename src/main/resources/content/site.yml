@@ -87,14 +87,14 @@ site:
 
   sponsors:
     - { name: "La Trobe University", logo: "/assets/sponsors/latrobe.webp", link: "https://www.latrobe.edu.au/" }
-    - { name: "Golden Age Cinema", logo: "/assets/sponsors/goldenage.png", link: "https://www.ourgoldenage.com.au/" }
-    - { name: "McAvoy Media", logo: "/assets/sponsors/mcavoy.png", link: "https://www.mcavoymedia.com.au/" }
-    - { name: "Karmic Artworks", logo: "/assets/sponsors/karmic.png", link: "https://karmicartworks.com.au/" }
-    - { name: "SAE University College", logo: "/assets/sponsors/sae.png", link: "https://sae.edu.au/" }
-    - { name: "National Institute of Dynamic Art", logo: "/assets/sponsors/nida.png", link: "https://www.nida.edu.au/" }
-    - { name: "Made in the West Film Festival", logo: "/assets/sponsors/madeinthewest.png", link: "https://www.madeinthewest.com.au/" }
-    - { name: "Nanoblock", logo: "/assets/sponsors/nanoblock.png", link: "https://nanoblock.com.au/" }
-    - { name: "PYT Fairfield", logo: "/assets/sponsors/pytfairfield.png", link: "https://pyt.com.au/" }
+    - { name: "Golden Age Cinema", logo: "/assets/sponsors/goldenage.webp", link: "https://www.ourgoldenage.com.au/" }
+    - { name: "McAvoy Media", logo: "/assets/sponsors/mcavoy.webp", link: "https://www.mcavoymedia.com.au/" }
+    - { name: "Karmic Artworks", logo: "/assets/sponsors/karmic.webp", link: "https://karmicartworks.com.au/" }
+    - { name: "SAE University College", logo: "/assets/sponsors/sae.webp", link: "https://sae.edu.au/" }
+    - { name: "National Institute of Dynamic Art", logo: "/assets/sponsors/nida.webp", link: "https://www.nida.edu.au/" }
+    - { name: "Made in the West Film Festival", logo: "/assets/sponsors/madeinthewest.webp", link: "https://www.madeinthewest.com.au/" }
+    - { name: "Nanoblock", logo: "/assets/sponsors/nanoblock.webp", link: "https://nanoblock.com.au/" }
+    - { name: "PYT Fairfield", logo: "/assets/sponsors/pytfairfield.webp", link: "https://pyt.com.au/" }
 
   faqs:
     - question: "Who can enter?"

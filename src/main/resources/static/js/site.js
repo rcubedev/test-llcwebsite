@@ -242,6 +242,21 @@
   }
 
   /* ------------------------------------------------------------------
+     Team marquee: the browser only loads a lazy image once it's on screen,
+     and most of the strip is off to the side, so headshots would load one
+     by one as they slide in, each showing a blank card first. Instead, load
+     the whole strip when the section is about a screen away.
+  ------------------------------------------------------------------ */
+
+  for (const strip of document.querySelectorAll("[data-marquee]")) {
+    new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      for (const img of strip.querySelectorAll('img[loading="lazy"]')) img.loading = "eager";
+      observer.disconnect();
+    }, { rootMargin: "100% 0px" }).observe(strip);
+  }
+
+  /* ------------------------------------------------------------------
      On load: jump to the card in the URL (#faq), or open a popup (#apply).
   ------------------------------------------------------------------ */
 
