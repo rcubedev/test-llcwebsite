@@ -30,7 +30,7 @@ dependencies {
     val springBoot = platform(SpringBootPlugin.BOM_COORDINATES)
     implementation(springBoot)
     developmentOnly(springBoot)
-    "mockitoAgent"(springBoot)
+    mockitoAgent(springBoot)
 
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
@@ -44,7 +44,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    "mockitoAgent"("org.mockito:mockito-core") { isTransitive = false }
+    mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
 }
 
 tasks.test {
