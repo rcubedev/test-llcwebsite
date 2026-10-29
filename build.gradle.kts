@@ -2,6 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     java
+    idea
     id("org.springframework.boot") version "4.1.2"
     id("org.limelightcreatives.tailwind")
     id("org.limelightcreatives.static-export")
@@ -85,3 +86,9 @@ sourceSets.main {
 // every page through Thymeleaf and copies the static assets. Defaults need no setup;
 // staticExport { } can change the profiles or output folder.
 // ---------------------------------------------------------------------------
+
+idea {
+    module {
+        sourceDirs = sourceDirs + sourceSets.main.get().tailwind.css.srcDirs
+    }
+}
