@@ -39,7 +39,7 @@
     <div class="absolute inset-0 translate-x-3 translate-y-3 bg-[var(--ontik-accent)] md:translate-x-4 md:translate-y-4"></div>
 
     <div class="absolute inset-0 overflow-hidden border-2 border-black bg-[var(--background)]">
-      <img src="/assets/cards/event.webp" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
+      <img th:src="${assets.url('/assets/cards/event.webp')}" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
     </div>
 
     <svg th:replace="~{fragments/art :: sparkle('pointer-events-none absolute -top-8 -left-6 h-14 w-10 rotate-[-10deg] text-[#1B2340] md:-top-12 md:-left-12 md:h-20 md:w-14')}"></svg>

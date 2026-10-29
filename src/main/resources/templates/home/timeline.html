@@ -91,7 +91,7 @@
     </div>
 
     <div class="hidden lg:block pointer-events-none absolute right-[-250px] top-0 bottom-0 w-[40%] min-w-[435px] z-0">
-      <img src="/assets/cards/bg2.webp" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-center">
+      <img th:src="${assets.url('/assets/cards/bg2.webp')}" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-center">
     </div>
   </div>
 
@@ -106,7 +106,7 @@
                  th:style="'transform: rotate(' + ${step.rotate} + 'deg)'">
               <div aria-hidden="true" class="absolute inset-0 translate-x-3 translate-y-3 bg-[var(--lc-accent)] md:translate-x-4 md:translate-y-4"></div>
               <div class="absolute inset-0 overflow-hidden border-2 border-black bg-[var(--background)]">
-                <img th:if="${step.image}" th:src="${step.image}" th:alt="${step.imageAlt}" loading="lazy"
+                <img th:if="${step.image}" th:src="${assets.url(step.image)}" th:alt="${step.imageAlt}" loading="lazy"
                      class="absolute inset-0 h-full w-full object-cover">
                 <div th:unless="${step.image}" class="flex h-full w-full items-center justify-center">
                   <span class="font-body text-xs uppercase tracking-[0.2em] text-black/40" th:text="'photo ' + ${step.n}"></span>

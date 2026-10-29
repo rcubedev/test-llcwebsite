@@ -59,7 +59,7 @@ class SitePagesTest {
             assertThat(html).contains("<title>" + page.meta().title() + "</title>");
             assertThat(html).contains("<meta name=\"description\" content=\"" + page.meta().description() + "\">");
             assertThat(html).contains("<link rel=\"canonical\" href=\"https://limelightcreatives.org" + page.path() + "\">");
-            assertThat(html).contains("<meta property=\"og:image\" content=\"https://limelightcreatives.org/assets/og.jpg\">");
+            assertThat(html).contains("<meta property=\"og:image\" content=\"https://limelightcreatives.org/assets/og.jpg?v=");
             assertThat(html).doesNotContain("noindex");
             assertThat(titles.add(page.meta().title())).as("unique title for %s", page.path()).isTrue();
         }
@@ -114,6 +114,25 @@ class SitePagesTest {
         for (String slug : new String[]{"privacy", "code-of-conduct", "safeguarding-policy"}) {
             assertThat(pages.legal(slug)).as(slug).isPresent();
         }
+    }
+
+    @Test
+    void assetUrlsCarryTheirContentHash() throws Exception {
+        // Everything but fonts (which the CSS loads by plain URL) is cached for a year, so each
+        // URL must change when its file does.
+        var assetUrl = java.util.regex.Pattern.compile(
+                "(?:src|href|content)=\"(?:https://limelightcreatives\\.org)?(/(?:css|js|assets|team|branding)/[^\"?]+|/favicon\\.ico)(?:\\?v=([0-9a-f]+))?\"");
+        int checked = 0;
+        for (SitePages.Page page : pages.all()) {
+            var matcher = assetUrl.matcher(fetch(page.path()).body());
+            while (matcher.find()) {
+                String path = java.net.URLDecoder.decode(matcher.group(1).replace("+", "%2B"), java.nio.charset.StandardCharsets.UTF_8);
+                assertThat(matcher.group(2)).as("hash on %s in %s", path, page.path())
+                        .isEqualTo(org.limelightcreatives.site.web.AssetsTest.hashOf(path));
+                checked++;
+            }
+        }
+        assertThat(checked).isGreaterThan(30);
     }
 
     @Test

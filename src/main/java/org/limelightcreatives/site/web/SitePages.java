@@ -21,17 +21,19 @@ import java.util.Optional;
 @Component
 public class SitePages {
 
-    /** A page's model always includes {@code site}, {@code home} and {@code meta} (its {@link PageMeta}). */
+    /** A page's model always includes {@code site}, {@code home}, {@code meta} (its {@link PageMeta}) and {@code assets}. */
     public record Page(String path, String template, PageMeta meta, Map<String, Object> model) {}
 
     private static final String NAME = "Limelight Creatives";
 
     private final SiteContent site;
     private final LegalPages legal;
+    private final Assets assets;
 
-    public SitePages(SiteContent site, LegalPages legal) {
+    public SitePages(SiteContent site, LegalPages legal, Assets assets) {
         this.site = site;
         this.legal = legal;
+        this.assets = assets;
     }
 
     public Page home() {
@@ -70,6 +72,7 @@ public class SitePages {
         model.put("site", site);
         model.put("home", path.equals("/"));
         model.put("meta", meta);
+        model.put("assets", assets);
         return new Page(path, template, meta, Map.copyOf(model));
     }
 }
