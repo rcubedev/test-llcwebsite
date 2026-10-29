@@ -1,0 +1,61 @@
+<!--/*
+  Popups. Each is a [data-modal] element that starts hidden; site.js opens and closes them.
+  Clicking the dark backdrop, a [data-modal-close] button or pressing Escape closes them.
+*/-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/*
+  Registration form (Fillout). Opened by any [data-open-apply] button or a #apply link.
+  Styled to match Fillout's own popup embed exactly (see "Registration popup" in app.css).
+*/-->
+<div th:fragment="apply" data-modal="apply" data-fade hidden class="apply-popup is-loading">
+  <div class="apply-popup-main">
+    <button type="button" data-modal-close aria-label="Close" class="apply-popup-close">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <!-- src is filled in when someone hovers, focuses or opens Register (site.js), so the form only loads for people who want it -->
+    <iframe th:attr="data-src=${site.event.filloutUrl()}" title="Embedded Form" class="apply-popup-iframe"
+            allow="microphone; camera; geolocation"></iframe>
+    <!-- Spinner while the form loads; site.js drops .is-loading once the iframe has loaded -->
+    <div class="apply-popup-loading" aria-hidden="true"><div class="apply-popup-spinner"></div></div>
+  </div>
+</div>
+
+<!-- "Interested in sponsoring?" -->
+<div th:fragment="sponsor" data-modal="sponsor" hidden
+     class="fixed inset-0 z-50 flex items-center justify-center px-6 backdrop-blur-sm bg-black/40">
+  <div class="relative w-full max-w-sm">
+    <div class="absolute inset-0 translate-x-3 translate-y-3 bg-black md:translate-x-4 md:translate-y-4"></div>
+
+    <div class="relative border-2 border-black p-8" style="background: var(--background)">
+      <button type="button" data-modal-close aria-label="Close"
+              class="absolute right-4 top-4 text-xl leading-none" style="color: var(--foreground)">&times;</button>
+
+      <h2 class="mb-2 text-2xl font-display font-bold" style="color: var(--foreground)">Let&apos;s keep in touch!</h2>
+      <p class="mb-6 text-sm" style="color: var(--foreground); opacity: 0.65">
+        Reach out and we&rsquo;ll get back to you promptly.
+      </p>
+
+      <a th:href="'mailto:' + ${site.event.contactEmail}" th:text="${site.event.contactEmail}"
+         class="inline-block text-lg font-body font-semibold underline" style="color: var(--foreground)">email</a>
+    </div>
+  </div>
+</div>
+
+<!-- Intro video. The YouTube player is only created when opened, and removed on close so it stops playing. -->
+<div th:fragment="video" data-modal="video" hidden
+     class="fixed inset-0 z-50 flex items-center justify-center px-6 backdrop-blur-sm bg-black/60">
+  <div class="relative w-full max-w-3xl">
+    <div class="absolute inset-0 translate-x-3 translate-y-3 bg-black md:translate-x-4 md:translate-y-4"></div>
+
+    <div class="relative border-2 border-black bg-black">
+      <button type="button" data-modal-close aria-label="Close"
+              class="absolute right-4 top-4 z-10 text-2xl leading-none text-white">&times;</button>
+      <div class="aspect-video w-full" data-video-slot th:attr="data-src=${site.event.videoEmbed()}"></div>
+    </div>
+  </div>
+</div>
+
+</html>

@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<article th:fragment="card" class="relative h-full overflow-hidden bg-[var(--background)]">
+  <div class="flex h-full flex-col justify-between px-6 py-12 md:px-16 md:py-16 lg:pr-[48%]">
+    <span class="font-body text-sm uppercase tracking-[0.15em]">FAQ</span>
+
+    <div>
+      <h2 class="relative inline-block font-display  text-[clamp(4rem,9vw,9rem)] leading-[0.82] tracking-[-0.07em]">
+        Questions?<svg th:replace="~{fragments/art :: squiggleQuestions('pointer-events-none absolute left-0 top-full mt-1 h-auto w-full text-[var(--ontik-accent)]')}"></svg>
+      </h2>
+
+      <!-- One answer open at a time (site.js). aria-expanded drives the styling. -->
+      <div data-accordion class="mt-14 max-w-3xl divide-y divide-[var(--border)] border-y border-[var(--border)]">
+        <div th:each="faq : ${site.faqs}" class="group/faq">
+          <button type="button" aria-expanded="false" data-accordion-toggle
+                  class="flex w-full items-center justify-between py-5 pl-4 text-left font-body transition-[border-color] duration-150 ">
+            <span class="font-bold transition-colors duration-150 group-has-[[aria-expanded=true]]/faq:text-[var(--ontik-accent)]"
+                  th:text="${faq.question}">Question</span>
+            <svg th:replace="~{fragments/art :: plus('ml-4 h-5 w-5 shrink-0 transition-transform duration-200 text-[var(--foreground)] group-has-[[aria-expanded=true]]/faq:rotate-45 group-has-[[aria-expanded=true]]/faq:text-[var(--ontik-accent)]')}"></svg>
+          </button>
+
+          <div class="grid grid-rows-[0fr] pl-4 transition-[grid-template-rows] duration-200 ease-out group-has-[[aria-expanded=true]]/faq:grid-rows-[1fr]">
+            <div class="overflow-hidden">
+              <p class="max-w-xl pb-5 font-body leading-relaxed" th:text="${faq.answer}">Answer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-6 max-w-3xl pl-4 font-body">
+        Got more questions as a parent or guardian?
+        <a th:href="${site.event.parentsGuide}"
+           class="font-bold underline decoration-[var(--ontik-accent)] underline-offset-4 transition-colors hover:text-[var(--ontik-accent)]">Read our parents&apos; guide</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="absolute right-[3vw] top-1/2 z-20 hidden aspect-[4/3] w-[38vw] max-w-6xl -translate-y-1/2 rotate-[1.5deg] lg:block xl:right-[5vw] xl:w-[40vw]">
+    <div class="absolute inset-0 translate-x-3 translate-y-3 bg-[var(--ontik-accent)] md:translate-x-4 md:translate-y-4"></div>
+
+    <div class="absolute inset-0 overflow-hidden border-2 border-black bg-[var(--background)]">
+      <img src="/assets/cards/event.webp" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover">
+    </div>
+
+    <svg th:replace="~{fragments/art :: sparkle('pointer-events-none absolute -top-8 -left-6 h-14 w-10 rotate-[-10deg] text-[#1B2340] md:-top-12 md:-left-12 md:h-20 md:w-14')}"></svg>
+    <svg th:replace="~{fragments/art :: sparkle('pointer-events-none absolute -bottom-9 -right-5 h-16 w-11 rotate-[10deg] text-[var(--ontik-accent)] md:-bottom-24 md:-right-16 md:h-24 md:w-16')}"></svg>
+  </div>
+</article>
+
+</html>

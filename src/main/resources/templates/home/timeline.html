@@ -1,0 +1,137 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/* One day of the schedule. Rows switch to a stacked layout when a tagged name would wrap (site.js). */-->
+<section th:fragment="day(day)" class="bg-[var(--lc-cream)]/[0.04] p-6 md:p-8">
+  <header class="mb-2 flex items-baseline justify-between gap-4">
+    <h4 class="font-display text-3xl md:text-4xl" th:text="${day.label}">Day one</h4>
+    <span class="font-body text-sm text-[var(--lc-mint)]" th:text="${day.date}">Sat 24 Oct</span>
+  </header>
+
+  <!-- Hidden measurer: every tagged row laid out inline, so site.js can tell if any would wrap. -->
+  <ul aria-hidden="true" data-schedule-measure class="invisible pointer-events-none absolute inset-x-0 top-0 -z-10">
+    <li th:each="slot : ${day.slots}" class="py-4">
+      <div th:if="${slot.tag}" class="grid grid-cols-[5.5rem_1fr_auto] gap-x-4">
+        <span></span>
+        <span data-measure-name class="font-display text-xl leading-tight md:text-2xl" th:text="${slot.name}"></span>
+        <span th:replace="~{home/timeline :: tag(${slot.tag})}"></span>
+      </div>
+    </li>
+  </ul>
+
+  <!-- data-stacked is set by site.js; group-data-stacked:* classes switch layouts -->
+  <ul data-schedule class="group relative mt-6">
+    <li th:each="slot : ${day.slots}" class="border-t border-current/15 py-4 first:border-t-0"
+        th:with="nameClass=${'font-display text-xl leading-tight md:text-2xl' + (slot.milestone() ? '' : ' text-[var(--lc-cream)]/85')},
+                 timeClass=${'font-body text-sm tabular-nums ' + (slot.milestone() ? 'text-[var(--lc-green-bright)]' : 'text-[var(--lc-cream)]/55')}">
+      <!-- stacked -->
+      <div class="hidden flex-col gap-1.5 group-data-stacked:flex">
+        <span th:class="${timeClass}" th:text="${slot.time}"></span>
+        <span th:class="${nameClass}" th:text="${slot.name}"></span>
+        <th:block th:if="${slot.tag}"><span th:replace="~{home/timeline :: tag(${slot.tag})}"></span></th:block>
+      </div>
+      <!-- inline -->
+      <div class="flex items-start gap-x-4 group-data-stacked:hidden">
+        <span th:class="${timeClass + ' w-[5.5rem] shrink-0 pt-1.5'}" th:text="${slot.time}"></span>
+        <div class="min-w-0 flex-1 flow-root">
+          <span th:if="${slot.tag}" class="float-right mb-1 ml-3 mt-1.5">
+            <span th:replace="~{home/timeline :: tag(${slot.tag})}"></span>
+          </span>
+          <span th:class="${nameClass}" th:text="${slot.name}"></span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<span th:fragment="tag(tag)" th:text="${tag}"
+      th:class="'w-fit rounded-full px-3 py-1 font-body text-[0.7rem] tracking-[0.08em] ' + (${tag == 'Compulsory'}
+          ? 'bg-[var(--lc-green)] text-[var(--lc-cream)]'
+          : 'border border-[var(--lc-mint)]/60 text-[var(--lc-mint)]')">Optional</span>
+
+<article th:fragment="card"
+         class="lc-card relative overflow-hidden bg-[var(--foreground)] text-[var(--background)]"
+         style="--lc-cream: var(--background); --lc-green: #01995C; --lc-accent: var(--ontik-accent, #01995C); --lc-green-bright: #3FBF86; --lc-mint: #81D7D4; --lc-lime: #AAC94F;">
+
+  <!-- Intro -->
+  <div class="relative flex min-h-[100svh] flex-col justify-between px-6 py-12 md:px-16 md:py-16">
+    <div class="mb-6 font-body text-sm uppercase tracking-[0.15em] md:mb-16 lg:mb-28">WHAT&apos;S NEXT</div>
+
+    <div>
+      <h2 class="font-display text-[clamp(4rem,9vw,9rem)] leading-[0.82] tracking-[-0.07em]">
+        Launching
+        <br>
+        <span class="font-bold">Limelight GENESIS</span>
+      </h2>
+
+      <!-- Locations -->
+      <div class="mt-8 space-y-6">
+        <div th:each="place : ${site.locations}" class="flex items-start gap-3 text-[var(--lc-mint)] lg:gap-4">
+          <svg th:replace="~{fragments/art :: pin('mt-1 h-6 w-6 shrink-0 md:h-8 md:w-8 lg:mt-2 lg:h-12 lg:w-12 xl:h-14 xl:w-14')}"></svg>
+          <div>
+            <p class="font-body text-xs uppercase tracking-[0.2em]" th:text="${place.label}">Label</p>
+            <p class="font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-tight text-[var(--background)]" th:text="${place.venue}">Venue</p>
+            <p class="font-body text-sm uppercase tracking-[0.15em]" th:text="${place.address}">Address</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-10 max-w-xl font-body text-lg leading-relaxed md:text-xl">
+        This October, Limelight Creatives is running our very first film-a-thon,
+        good news: you’re invited! Over two days, you’ll learn how to write, shoot,
+        and edit your own short film. No experience needed, just bring your ideas and a
+        crew of new friends.
+      </p>
+
+      <div class="mt-12 max-w-3xl space-y-4">
+        <div th:each="keyDate : ${site.keyDates}" class="flex items-center justify-between border-t border-current/20 pt-4">
+          <span class="font-display text-2xl" th:text="${keyDate.date}">Date</span>
+          <span class="font-body text-md" th:text="${keyDate.label}">Label</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden lg:block pointer-events-none absolute right-[-250px] top-0 bottom-0 w-[40%] min-w-[435px] z-0">
+      <img src="/assets/cards/bg2.webp" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-center">
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="relative px-6 pb-20 md:px-16 md:pb-28">
+    <ol class="mt-14 space-y-16 md:space-y-20">
+      <li th:each="step, it : ${site.steps}" th:with="flip=${it.odd == false}"
+          class="border-t border-current/25 pt-16 first:border-t-0 first:pt-0 md:pt-20">
+        <div class="bg-[var(--lc-cream)]/[0.04] grid items-center gap-6 p-6 md:mx-0 md:grid-cols-2 md:gap-12 md:p-10">
+          <div th:class="${flip} ? 'md:order-2' : ''">
+            <div class="relative aspect-[4/3] w-full max-w-[560px]" th:classappend="${flip} ? 'ml-auto' : 'mr-auto'"
+                 th:style="'transform: rotate(' + ${step.rotate} + 'deg)'">
+              <div aria-hidden="true" class="absolute inset-0 translate-x-3 translate-y-3 bg-[var(--lc-accent)] md:translate-x-4 md:translate-y-4"></div>
+              <div class="absolute inset-0 overflow-hidden border-2 border-black bg-[var(--background)]">
+                <img th:if="${step.image}" th:src="${step.image}" th:alt="${step.imageAlt}" loading="lazy"
+                     class="absolute inset-0 h-full w-full object-cover">
+                <div th:unless="${step.image}" class="flex h-full w-full items-center justify-center">
+                  <span class="font-body text-xs uppercase tracking-[0.2em] text-black/40" th:text="'photo ' + ${step.n}"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col" th:classappend="${flip} ? 'md:order-1 md:items-end md:text-right' : 'md:items-start'">
+            <span class="font-body text-sm tracking-[0.2em] text-[var(--lc-mint)]" th:text="'Step ' + ${step.n}">Step 01</span>
+            <p class="mt-3 font-display text-[clamp(1.75rem,3.4vw,2.9rem)] leading-[1.05] tracking-[-0.02em]" th:utext="${step.title}">Title</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Schedule -->
+  <div class="relative px-6 pb-8 md:px-16 md:pb-16">
+    <h3 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.9] tracking-[-0.04em]">Schedule</h3>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8">
+      <th:block th:each="day : ${site.schedule}"><section th:replace="~{home/timeline :: day(${day})}"></section></th:block>
+    </div>
+  </div>
+</article>
+
+</html>

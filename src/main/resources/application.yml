@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: limelight-website
+  config:
+    # Home page content: dates, venues, sponsors, FAQs, team.
+    import: classpath:content/site.yml

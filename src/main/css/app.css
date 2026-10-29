@@ -1,0 +1,281 @@
+/*
+ * The main source set's Tailwind entry. Built by ./gradlew compileTailwind into static/css/app.css.
+ * Tailwind only scans the folders listed below for class names, so a class used
+ * anywhere else (e.g. a new folder) needs a matching @source line here and in
+ * the sourceSets.main { tailwind { content } } in build.gradle.kts.
+ */
+@import "tailwindcss" source(none);
+
+@source "../resources/templates";
+@source "../resources/static/js";
+@source "../java"; /* classes added to Markdown in LegalPages.java */
+
+/* --------------------------------
+   Fonts
+-------------------------------- */
+
+@font-face {
+  font-family: "Classica";
+  src: url("/fonts/classica/Classica-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Classica";
+  src: url("/fonts/classica/Classica-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Same weight mapping as the old site: SemiBold is "bold", Bold is "black". */
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/hanken-grotesk/HankenGrotesk-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/hanken-grotesk/HankenGrotesk-SemiBold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/hanken-grotesk/HankenGrotesk-Bold.woff2") format("woff2");
+  font-weight: 900;
+  font-display: swap;
+}
+
+@theme {
+  --font-display: "Classica", ui-serif, Georgia, serif;
+  --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* --------------------------------
+   Light theme
+-------------------------------- */
+
+:root {
+  --background: #fffdf5;
+  --foreground: #202c44;
+
+  --surface: #f5f7ed;
+  --surface-hover: #e8eee0;
+
+  --accent: #9fc031;
+  --ontik-accent: #01995C;
+  --accent-foreground: #202c44;
+
+  --cyan: #81d7d4;
+  --cyan-bright: #58c8d4;
+  --blue: #202c44;
+  --lime: #9fc031;
+
+  --border: rgba(32, 44, 68, 0.18);
+}
+
+/* --------------------------------
+   Dark theme (not switched on yet; add class="dark" to <html> to use it)
+-------------------------------- */
+
+.dark {
+  --background: #202c44;
+  --foreground: #fffdf5;
+
+  --surface: #26334d;
+  --surface-hover: #30405e;
+
+  --accent: #9fc031;
+  --accent-foreground: #202c44;
+
+  --cyan: #81d7d4;
+  --cyan-bright: #58c8d4;
+  --blue: #202c44;
+  --lime: #9fc031;
+
+  --border: rgba(255, 253, 245, 0.2);
+}
+
+/* --------------------------------
+   Base
+-------------------------------- */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+
+  /* Dotted background */
+  --d: 1px;
+
+  background-image: radial-gradient(
+    circle at var(--d) var(--d),
+    var(--foreground) calc(var(--d) - 1px),
+    transparent var(--d)
+  );
+
+  background-size: 25px 25px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* While a modal is open the page behind it can't scroll. */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* --------------------------------
+   Team marquee
+   --marquee-distance is set on the track: one full set of people, (176px + 24px) each.
+-------------------------------- */
+
+@keyframes marquee-team {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-1 * var(--marquee-distance)));
+  }
+}
+
+.marquee-team {
+  animation: marquee-team 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-team {
+    animation: none;
+  }
+}
+
+/* --------------------------------
+   Registration popup
+   Same look as Fillout's own popup embed, which the old site used.
+-------------------------------- */
+
+.apply-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 40px 80px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.apply-popup.is-open {
+  opacity: 1;
+}
+
+.apply-popup-main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.apply-popup-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 10px;
+}
+
+.apply-popup-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  box-sizing: content-box;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(23, 23, 23);
+  color: white;
+  cursor: pointer;
+}
+
+.apply-popup-close:hover {
+  background: rgb(39, 39, 39);
+}
+
+/* While the form loads: spinner shows, form and close button stay hidden, then fade in. */
+.apply-popup-iframe,
+.apply-popup-close {
+  transition: opacity 0.5s ease-in-out, background 0.2s ease-in-out;
+}
+
+.apply-popup.is-loading .apply-popup-iframe,
+.apply-popup.is-loading .apply-popup-close {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.apply-popup-loading {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.apply-popup.is-loading .apply-popup-loading {
+  display: flex;
+}
+
+.apply-popup-spinner {
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  border: 2px solid rgb(170, 170, 170);
+  border-bottom-color: white;
+  border-radius: 50%;
+  animation: apply-popup-spin 1s linear infinite;
+}
+
+@keyframes apply-popup-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Phones: full screen, close button in a strip above the form */
+@media screen and (max-width: 480px) {
+  .apply-popup {
+    padding: 0;
+  }
+
+  .apply-popup-main {
+    display: flex;
+    flex-flow: column;
+  }
+
+  .apply-popup-iframe {
+    height: auto;
+    flex-grow: 1;
+    border-radius: 0;
+  }
+
+  .apply-popup-close {
+    position: static;
+    margin: 4px 8px 4px auto;
+  }
+}

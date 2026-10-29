@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/* A tilted photo print. Clickable ones open the intro video. */-->
+<button th:fragment="videoPolaroid(rotate, cls)" type="button" data-open-video
+        aria-label="Watch the Limelight intro video"
+        th:class="'block bg-white p-2.5 pb-4 shadow-[0_10px_24px_rgba(0,0,0,0.28)] group cursor-pointer motion-safe:transition-transform motion-safe:hover:scale-105 focus-visible:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ontik-accent)] ' + ${cls}"
+        th:style="'transform: rotate(' + ${rotate} + 'deg)'">
+  <span class="relative block aspect-[16/14] w-full overflow-hidden bg-neutral-300">
+    <img th:src="${site.event.videoThumbnail()}" alt="Watch the Limelight intro video" class="h-full w-full object-cover">
+    <span class="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
+      <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-black shadow-md">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="ml-0.5 h-4 w-4"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </span>
+  </span>
+  <span class="mt-2.5 block text-center font-body text-xs text-black/60">watch the intro</span>
+</button>
+
+<section th:fragment="hero" class="mt-0 relative min-h-dvh overflow-hidden">
+  <!-- Video polaroid, desktop: floats bottom right -->
+  <button th:replace="~{home/hero :: videoPolaroid(5, 'absolute z-0 hidden bottom-24 right-16 w-48 lg:block xl:w-64')}"></button>
+
+  <div class="mx-auto mt-8 relative z-10 flex min-h-dvh max-w-7xl flex-col items-center justify-center px-6 text-center pointer-events-none">
+    <a href="#timeline"
+       class="pointer-events-auto mb-8 inline-flex items-center gap-2 rounded-full  px-5 py-2 text-md font-body font-semibold backdrop-blur-sm transition hover:bg-white/10">
+      <span th:text="${site.event.banner}">Banner</span>
+      <span aria-hidden="true">&gt;</span>
+    </a>
+
+    <!-- One heading, two lines: each line keeps its own size and sparkles -->
+    <h1 class="flex flex-col items-center">
+      <span class="relative block">
+        <span class="block max-w-5xl text-[3.5rem] md:text-[clamp(3.75rem,6rem,10rem)] font-display leading-[0.8] tracking-[-0.06em] md:tracking-[-0.08em]">
+          Your chance to step
+        </span>
+
+        <!-- sparkles hidden on mobile -->
+        <svg th:replace="~{fragments/art :: sparkleBig('pointer-events-none absolute hidden -top-7 -right-28 h-28 w-[4.5rem] md:block')}"></svg>
+        <svg th:replace="~{fragments/art :: sparkleSmall('pointer-events-none absolute hidden -top-16 -right-16 h-16 w-16 md:block')}"></svg>
+      </span>
+
+      <span class="relative block">
+        <span class="block max-w-5xl text-[3.75rem] md:text-[clamp(4rem,6rem,11rem)] font-display font-bold leading-[0.8] tracking-[-0.06em] md:tracking-[-0.08em]">
+          into the
+          <span class="relative inline-block text-[var(--ontik-accent)]">limelight.<svg th:replace="~{fragments/art :: squiggleHero('pointer-events-none absolute left-0 top-full mt-2 h-auto w-full')}"></svg></span>
+        </span>
+
+        <!-- sparkles hidden on mobile -->
+        <svg th:replace="~{fragments/art :: sparkleBig('pointer-events-none absolute hidden -bottom-12 -left-28 h-28 w-[4.5rem] md:block')}"></svg>
+        <svg th:replace="~{fragments/art :: sparkleSmall('pointer-events-none absolute hidden -bottom-20 -left-16 h-16 w-16 md:block')}"></svg>
+      </span>
+    </h1>
+
+    <p class="mt-10 max-w-xl text-xl font-body font-bold">
+      Limelight Creatives run free film-a-thons for high schoolers.
+    </p>
+
+    <div class="pointer-events-auto mt-8 flex gap-4 text-lg">
+      <th:block th:replace="~{fragments/button :: button('#apply', 'REGISTER FOR GENESIS >', 'primary', '')}"></th:block>
+      <!--/* The label has an apostrophe, which can't go straight into the fragment call */-->
+      <th:block th:with="whatsNext=${&quot;WHAT'S NEXT&quot;}">
+        <th:block th:replace="~{fragments/button :: button('#timeline', ${whatsNext}, 'secondary', '')}"></th:block>
+      </th:block>
+    </div>
+
+    <!-- Video polaroid, mobile/tablet: sits under the buttons -->
+    <button th:replace="~{home/hero :: videoPolaroid(-2, 'pointer-events-auto mt-8 w-64 lg:hidden')}"></button>
+
+    <a class="pointer-events-auto mt-8" href="/#contact" data-open-sponsor><u>Interested in sponsoring?</u></a>
+  </div>
+</section>
+
+</html>

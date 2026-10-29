@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<article th:fragment="card" class="relative h-full bg-[var(--background)]">
+  <svg th:replace="~{fragments/art :: stickerFilter}"></svg>
+
+  <div class="flex h-full flex-col gap-10 px-6 py-12 md:gap-16 md:px-16 md:py-16 ">
+    <span class="font-body text-sm uppercase tracking-[0.15em]">SPONSORS</span>
+
+    <div>
+      <h2 class="font-display text-[clamp(4rem,9vw,9rem)] leading-[0.82] tracking-[-0.07em]">
+        Our <span class="relative inline-block font-bold text-[var(--ontik-accent)]">sponsors.<svg th:replace="~{fragments/art :: squiggleSponsors('pointer-events-none absolute left-0 top-full mt-1 h-auto w-full')}"></svg></span>
+      </h2>
+
+      <a class="mt-16 inline-block max-w-xl font-body text-lg leading-relaxed md:text-xl" href="/#contact" data-open-sponsor>
+        Thank you to our partners for supporting our mission. <u>Interested in sponsoring?</u>
+      </a>
+
+      <div class="mt-12 rounded-lg p-8 md:p-24"
+           style="background-image: radial-gradient(circle at 1px 1px, var(--foreground) 0, transparent 1px); background-size: 25px 25px;">
+        <div class="flex flex-col items-center gap-4 md:gap-6">
+          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-6 md:gap-x-3">
+            <!-- Each sticker gets a slight tilt so they look hand-placed -->
+            <div th:each="sponsor, it : ${site.sponsors}"
+                 th:with="tilt=${ {-3, 2, -1.5, 3, -2, 1.5}[it.index % 6] }"
+                 class="p-2 transition-transform duration-200 hover:!rotate-0 hover:scale-105"
+                 th:style="'transform: rotate(' + ${tilt} + 'deg)'">
+              <div class="flex items-center justify-center [filter:url(#sticker)] w-64 h-28 max-w-full text-3xl sm:w-72 md:w-96 md:h-40 md:text-4xl">
+                <a th:if="${sponsor.logo}" th:href="${sponsor.link}" class="block h-full w-full">
+                  <img th:src="${sponsor.logo}" th:alt="${sponsor.name}" loading="lazy" draggable="false"
+                       class="h-full max-h-[inherit] w-full object-contain">
+                </a>
+                <!-- Text placeholder until there's a logo -->
+                <span th:unless="${sponsor.logo}" class="px-3 font-bold leading-none text-black" th:text="${sponsor.name}"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+</html>
