@@ -1,0 +1,9 @@
+{
+  "name": "patient-meadow-1f96",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./build/site",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
