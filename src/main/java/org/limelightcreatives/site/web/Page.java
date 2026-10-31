@@ -1,22 +1,17 @@
 package org.limelightcreatives.site.web;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
- * Represents a page, including its path, template, metadata and model.
+ * Represents a website page.
  *
- * @param path the page URL's path
- * @param template the Thymeleaf template used to render the page
+ * @param path the local absolute URL path
  * @param meta the page's metadata
- * @param model the attributes required by the template
  */
-public record Page(URI path, String template, PageMeta meta, Map<String, Object> model) {
+public record Page(URI path, PageMeta meta) {
 
     public Page {
         if (path.isAbsolute() || path.getRawAuthority() != null || path.getRawPath() == null || !path.getRawPath().startsWith("/"))
             throw new IllegalArgumentException("Page path must be a local absolute path");
-
-        model = Map.copyOf(model);
     }
 }

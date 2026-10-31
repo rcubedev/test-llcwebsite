@@ -40,7 +40,7 @@ public class SitePages {
      * @return the homepage definition
      */
     public Page home() {
-        return page("/", "index", true,
+        return page("/", true,
                 NAME + " - Teen Filmmaking Event in Sydney",
                 "Limelight Creatives runs free film-a-thons for high schoolers; no experience needed!");
     }
@@ -51,24 +51,15 @@ public class SitePages {
      * @return the not found page definition
      */
     public Page notFound() {
-        return page("/404", "error/404", false,
+        return page("/404", false,
                 "Page not found | " + NAME,
                 "This page doesn't exist.");
     }
 
-    private Page page(String path, String template, boolean indexed, String title, String description, Map<String, Object> extra) {
+    private Page page(String path, boolean indexed, String title, String description) {
         URI pathUri = URI.create(path);
         PageMeta meta = new PageMeta(title, description, this.site.url().resolve(pathUri), indexed);
 
-        Map<String, Object> model = new HashMap<>(extra);
-        model.put("site", this.site);
-        model.put("home", path.equals("/"));
-        model.put("meta", meta);
-
-        return new Page(pathUri, template, meta, model);
-    }
-
-    private Page page(String path, String template, boolean indexed, String title, String description) {
-        return page(path, template, indexed, title, description, Map.of());
+        return new Page(pathUri, meta);
     }
 }

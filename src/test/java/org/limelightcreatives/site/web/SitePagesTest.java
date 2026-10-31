@@ -37,7 +37,9 @@ class SitePagesTest {
         Page home = this.pages.home();
 
         assertEquals(URI.create("/"), home.path());
-        assertEquals("index", home.template());
+        assertEquals("Limelight Creatives - Teen Filmmaking Event in Sydney", home.meta().title());
+        assertEquals("Limelight Creatives runs free film-a-thons for high schoolers; no experience needed!",
+                home.meta().description());
         assertEquals(URI.create("https://limelightcreatives.org/"), home.meta().url());
         assertTrue(home.meta().indexed());
     }
@@ -47,7 +49,8 @@ class SitePagesTest {
         Page notFound = this.pages.notFound();
 
         assertEquals(URI.create("/404"), notFound.path());
-        assertEquals("error/404", notFound.template());
+        assertEquals("Page not found | Limelight Creatives", notFound.meta().title());
+        assertEquals("This page doesn't exist.", notFound.meta().description());
         assertFalse(notFound.meta().indexed());
     }
 }

@@ -1,6 +1,7 @@
 package org.limelightcreatives.site.web;
 
 import org.junit.jupiter.api.Test;
+import org.limelightcreatives.site.content.SiteContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -21,25 +22,23 @@ class SiteControllerTests {
     SitePages pages;
 
     @MockitoBean
+    SiteContent site;
+
+    @MockitoBean
     CrawlerFiles crawlerFiles;
 
     @MockitoBean
     Assets assets;
 
     /*@Test
-    void home_PageRequested_ReturnsHomePage() throws Exception {
+    void home_PageRequested_RendersHomePage() throws Exception {
         Page home = new Page(
                 URI.create("/"),
-                "index",
                 new PageMeta(
                         "Limelight Creatives",
                         "A filmmaking event for high schoolers.",
                         URI.create("https://limelightcreatives.org/"),
                         true
-                ),
-                Map.of(
-                        "site", "Limelight Creatives",
-                        "home", true
                 )
         );
 
@@ -48,7 +47,9 @@ class SiteControllerTests {
         this.mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
-                .andExpect(model().attribute("site", "Limelight Creatives"))
+                .andExpect(model().attribute("site", this.site))
+                .andExpect(model().attribute("assets", this.assets))
+                .andExpect(model().attribute("meta", home.meta()))
                 .andExpect(model().attribute("home", true));
     }*/
 

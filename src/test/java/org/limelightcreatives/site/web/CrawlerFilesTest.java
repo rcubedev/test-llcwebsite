@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,26 +39,22 @@ class CrawlerFilesTest {
     void sitemapXml_indexedPages_IncludesOnlyIndexedPages() {
         Page indexedPage = new Page(
                 URI.create("/"),
-                "index",
                 new PageMeta(
                         "Homepage",
                         "Homepage description",
                         URI.create("https://limelightcreatives.org/"),
                         true
-                ),
-                Map.of()
+                )
         );
 
         Page nonIndexedPage = new Page(
                 URI.create("/notIndexed"),
-                "notIndexed",
                 new PageMeta(
                         "Not indexed",
                         "Not indexed description",
                         URI.create("https://limelightcreatives.org/notIndexed"),
                         false
-                ),
-                Map.of()
+                )
         );
 
         when(this.pages.all()).thenReturn(List.of(indexedPage, nonIndexedPage));
@@ -75,14 +70,12 @@ class CrawlerFilesTest {
     void sitemapXml_UrlWithXmlCharacters_EscapesSpecialCharacters() {
         Page page = new Page(
                 URI.create("/"),
-                "index",
                 new PageMeta(
                         "Homepage",
                         "Homepage description",
                         URI.create("https://limelightcreatives.org/?a=1&b=2"),
                         true
-                ),
-                Map.of()
+                )
         );
 
         when(this.pages.all()).thenReturn(List.of(page));
