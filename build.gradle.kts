@@ -27,11 +27,14 @@ val mockitoAgentClasspath = configurations.resolvable("mockitoAgentClasspath") {
 dependencies {
     val springBoot = platform(SpringBootPlugin.BOM_COORDINATES)
     implementation(springBoot)
+    annotationProcessor(springBoot)
     developmentOnly(springBoot)
     mockitoAgent(springBoot)
 
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
