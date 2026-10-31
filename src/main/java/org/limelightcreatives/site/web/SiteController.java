@@ -29,10 +29,10 @@ public class SiteController {
         return this.crawlerFiles.sitemapXml();
     }
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String home(Model model) {
         return render(this.pages.home(), model);
-    }
+    }*/
 
     private static String render(Page page, Model model) {
         model.addAllAttributes(page.model());
