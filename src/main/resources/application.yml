@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: limelight-website
+  config:
+    import: classpath:content/site.yml
