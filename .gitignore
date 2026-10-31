@@ -34,3 +34,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# gradle
+.gradle
+build/
+
+# intellij
+.idea
+*.iml
+*.ipr
+*.iws
