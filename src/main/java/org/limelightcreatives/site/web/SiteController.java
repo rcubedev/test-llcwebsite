@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -11,10 +12,17 @@ public class SiteController {
 
     private final SitePages pages;
     private final CrawlerFiles crawlerFiles;
+    private final Assets assets;
 
-    public SiteController(SitePages pages, CrawlerFiles crawlerFiles) {
+    public SiteController(SitePages pages, CrawlerFiles crawlerFiles, Assets assets) {
         this.pages = pages;
         this.crawlerFiles = crawlerFiles;
+        this.assets = assets;
+    }
+
+    @ModelAttribute("assets")
+    public Assets assets() {
+        return this.assets;
     }
 
     @GetMapping(value = "/robots.txt", produces = MediaType.TEXT_PLAIN_VALUE)
