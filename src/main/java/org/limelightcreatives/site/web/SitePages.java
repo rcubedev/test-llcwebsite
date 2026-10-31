@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +23,15 @@ public class SitePages {
 
     public SitePages(SiteContent site) {
         this.site = site;
+    }
+
+    /**
+     * Returns all page definitions, excluding {@link #notFound()}.
+     *
+     * @return all pages available on the site
+     */
+    public List<Page> all() {
+        return List.of(home());
     }
 
     /**
