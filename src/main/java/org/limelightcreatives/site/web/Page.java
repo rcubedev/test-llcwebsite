@@ -14,7 +14,7 @@ import java.util.Map;
 public record Page(URI path, String template, PageMeta meta, Map<String, Object> model) {
 
     public Page {
-        if (path().isAbsolute() || path().getRawAuthority() != null || path().getRawPath() == null || !path().getRawPath().startsWith("/"))
+        if (path.isAbsolute() || path.getRawAuthority() != null || path.getRawPath() == null || !path.getRawPath().startsWith("/"))
             throw new IllegalArgumentException("Page path must be a local absolute path");
 
         model = Map.copyOf(model);
