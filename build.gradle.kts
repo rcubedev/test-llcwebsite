@@ -5,6 +5,7 @@ plugins {
     idea
     id("org.springframework.boot") version "4.1.2" // todo(fut): version catalog
     id("org.limelightcreatives.tailwind")
+    id("org.limelightcreatives.static-export")
 }
 
 group = "org.limelightcreatives"

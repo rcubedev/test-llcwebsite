@@ -3,12 +3,17 @@ package org.limelightcreatives.site;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class SiteApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(SiteApp.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(SiteApp.class, args);
+
+        if (context.getEnvironment().matchesProfiles("export")) {
+            System.exit(SpringApplication.exit(context));
+        }
     }
 }

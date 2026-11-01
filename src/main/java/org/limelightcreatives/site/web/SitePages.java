@@ -31,13 +31,15 @@ public class SitePages {
     }
 
     /**
-     * Returns all page definitions, excluding {@link #notFound()}.
+     * Returns all page definitions.
      *
      * @return all pages available on the site
      */
     public List<Page> all() {
         List<Page> pages = new ArrayList<>();
         pages.add(home());
+        pages.add(notFound());
+        pages.add(internalServerError());
         this.legal.all().stream().map(this::legalPage).forEach(pages::add);
         return Collections.unmodifiableList(pages);
     }
