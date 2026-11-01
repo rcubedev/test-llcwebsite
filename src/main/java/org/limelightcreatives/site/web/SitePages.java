@@ -56,6 +56,17 @@ public class SitePages {
                 "This page doesn't exist.");
     }
 
+    /**
+     * Returns the internal server error page.
+     *
+     * @return the internal server error page definition
+     */
+    public Page internalServerError() {
+        return page("/500", false,
+                "Something went wrong | " + NAME,
+                "Something went wrong on our end. Please try again later.");
+    }
+
     private Page page(String path, boolean indexed, String title, String description) {
         URI pathUri = URI.create(path);
         PageMeta meta = new PageMeta(title, description, this.site.url().resolve(pathUri), indexed);

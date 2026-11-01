@@ -47,12 +47,26 @@ public class SiteController {
         return this.crawlerFiles.sitemapXml();
     }
 
-    /*@GetMapping("/")
+    @GetMapping("/")
     public String home(Model model) {
         Page home = this.pages.home();
         populateModel(home, model);
         return "index";
-    }*/
+    }
+
+    @GetMapping("/404")
+    public String notFound(Model model) {
+        Page notFound = this.pages.notFound();
+        populateModel(notFound, model);
+        return "error/404";
+    }
+
+    @GetMapping("/500")
+    public String internalServerError(Model model) {
+        Page notFound = this.pages.internalServerError();
+        populateModel(notFound, model);
+        return "error/500";
+    }
 
     private static void populateModel(Page page, Model model) {
         model.addAttribute("meta", page.meta());
