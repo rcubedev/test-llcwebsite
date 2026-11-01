@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download Static Website
+        uses: actions/download-artifact@v7
+        with:
+          name: website-static
+          path: build/site/
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine Worker Name
+        id: worker_name
+        env:
+          BRANCH_NAME: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            echo "name=limelight-website" >> "$GITHUB_OUTPUT"
+          else
+            slug=$(printf '%s' "$BRANCH_NAME" |
+              tr '[:upper:]' '[:lower:]' |
+              sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
+
+            slug="${slug:0:36}"
+            slug="${slug%-}"
+            [[ -n "$slug" ]] || slug="branch"
+
+            hash=$(printf '%s' "$BRANCH_NAME" | sha256sum | cut -c1-8)
+
+            echo "name=limelight-website-${slug}-${hash}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --name ${{ steps.worker_name.outputs.name }}
