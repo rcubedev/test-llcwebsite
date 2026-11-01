@@ -1,0 +1,25 @@
+<!--/* @thymesVar id="assets" type="org.limelightcreatives.site.web.Assets" */-->
+<!--/* @thymesVar id="site" type="org.limelightcreatives.site.content.SiteContent" */-->
+<!--/* @thymesVar id="home" type="boolean" */-->
+
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" data-navbar
+    class="fixed left-0 top-4 z-50 w-full px-4 transition-transform duration-300 ease-out translate-y-0">
+
+    <nav class="relative mx-auto flex max-w-7xl items-center justify-between rounded-sm border border-[var(--border)]
+                bg-[var(--background)] px-2 py-2 md:px-3">
+        <a th:href="@{~/}" aria-label="Go to home">
+            <img th:src="${assets.url('/branding/logo.svg')}" alt="Limelight Creatives" width="64" height="64">
+        </a>
+
+        <div th:if="${home}" class="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex">
+            <div th:each="link, it : ${site.nav}" class="flex items-center">
+                <a th:href="${'#' + link.target}"
+                   class="px-3 py-2 font-display text-sm font-bold tracking-[0.12em] transition-opacity hover:opacity-50"
+                   th:text="${link.label}">ABOUT</a>
+                <span th:unless="${it.last}" aria-hidden="true" class="font-display text-sm">/</span>
+            </div>
+        </div>
+
+        <th:block th:replace="~{fragments/button :: button('#apply', 'REGISTER >', 'secondary', '')}"></th:block>
+    </nav>
+</header>

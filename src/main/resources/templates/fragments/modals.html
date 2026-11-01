@@ -1,0 +1,51 @@
+<!--/* @thymesVar id="site" type="org.limelightcreatives.site.content.SiteContent" */-->
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!-- register fillout form -->
+    <div th:fragment="apply" data-modal="apply" data-fade hidden class="apply-popup is-loading">
+        <button type="button" data-modal-close aria-label="Close" class="apply-popup-close">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <iframe th:attr="data-src=${site.event.filloutUrl}" title="Embedded Form" class="apply-popup-iframe"
+                allow="microphone; camera; geolocation"></iframe>
+        <div class="apply-popup-loading" aria-hidden="true">
+            <div class="apply-popup-spinner"></div>
+        </div>
+    </div>
+
+    <!-- interested in sponsoring -->
+    <div th:fragment="sponsor" data-modal="sponsor" hidden
+         class="fixed inset-0 z-50 flex items-center justify-center px-6 backdrop-blur-sm bg-black/40">
+        <div class="relative w-full max-w-sm">
+            <div class="absolute inset-0 translate-x-3 translate-y-3 bg-black md:translate-x-4 md:translate-y-4"></div>
+            <div class="relative border-2 border-black p-8 bg-[var(--background)]">
+                <button type="button" data-modal-close aria-label="Close"
+                        class="absolute right-4 top-4 text-xl leading-none text-[var(--foreground)]">&times;</button>
+
+                <h2 class="mb-2 text-2xl font-display font-bold text-[var(--foreground)]">Let&apos;s keep in touch!</h2>
+                <p class="mb-6 text-sm text-[var(--foreground)] opacity-65">
+                    Reach out and we&rsquo;ll get back to you promptly.
+                </p>
+                <a th:href="${'mailto:' + site.event.contactEmail}" th:text="${site.event.contactEmail}"
+                   class="inline-block text-lg font-body font-semibold underline text-[var(--foreground)]">email</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- intro vid -->
+    <div th:fragment="video" data-modal="video" hidden
+        class="fixed inset-0 z-50 flex items-center justify-center px-6 backdrop-blur-sm bg-black/60">
+        <div class="relative w-full max-w-3xl">
+            <div class="absolute inset-0 translate-x-3 translate-y-3 bg-black md:translate-x-4 md:translate-y-4"></div>
+
+            <div class="relative border-2 border-black bg-black">
+                <button type="button" data-modal-close aria-label="Close"
+                        class="absolute right-4 top-4 z-10 text-2xl leading-none text-white">&times;</button>
+
+                <div class="aspect-video w-full" data-video-slot th:attr="data-src=${site.event.videoEmbed}"></div>
+            </div>
+        </div>
+    </div>
+</html>
