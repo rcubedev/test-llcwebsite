@@ -3,6 +3,7 @@
   "name": "llc-website",
   "main": "./cloudflare/worker.js",
   "compatibility_date": "2026-11-01",
+  "preview_urls": true,
   "assets": {
     "directory": "./build/site",
     "binding": "ASSETS",

@@ -30,26 +30,41 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Determine Worker Name
-        id: worker_name
+      - name: Determine Preview Alias
+        id: alias
         env:
           BRANCH_NAME: ${{ github.event.workflow_run.head_branch }}
         run: |
           if [[ "$BRANCH_NAME" == "main" ]]; then
-            echo "name=llc-website" >> "$GITHUB_OUTPUT"
-          else
-            slug=$(printf '%s' "$BRANCH_NAME" |
-              tr '[:upper:]' '[:lower:]' |
-              sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
-
-            slug="${slug:0:33}"
-            slug="${slug%-}"
-            [[ -n "$slug" ]] || slug="branch"
-
-            hash=$(printf '%s' "$BRANCH_NAME" | sha256sum | cut -c1-8)
-
-            echo "name=llc-website-${slug}-${hash}" >> "$GITHUB_OUTPUT"
+            echo "alias=" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          slugify() {
+            printf '%s' "$1" |
+              tr '[:upper:]' '[:lower:]' |
+              sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//'
+          }
+
+          slug=$(slugify "$BRANCH_NAME")
+          [[ -n "$slug" ]] || slug="branch"
+
+          clash=false
+          while IFS= read -r other; do
+            [[ "$other" == "$BRANCH_NAME" ]] && continue
+            if [[ "$(slugify "$other")" == "$slug" ]]; then
+              clash=true
+              break
+            fi
+          done < <(git ls-remote --heads origin | sed 's|.*refs/heads/||')
+
+          if [[ "$clash" == true || ${#slug} -gt 42 ]]; then
+            hash=$(printf '%s' "$BRANCH_NAME" | sha256sum | cut -c1-8)
+            slug="${slug:0:33}"
+            slug="${slug%-}-${hash}"
+          fi
+
+          echo "alias=${slug}" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -68,9 +83,18 @@ jobs:
         if: steps.node_modules_cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Deploy
+      - name: Deploy to production
+        if: steps.alias.outputs.alias == ''
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --name ${{ steps.worker_name.outputs.name }}
+          command: deploy
+
+      - name: Deploy branch preview
+        if: steps.alias.outputs.alias != ''
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --preview-alias ${{ steps.alias.outputs.alias }}
