@@ -34,8 +34,9 @@ jobs:
         id: alias
         env:
           BRANCH_NAME: ${{ github.event.workflow_run.head_branch }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
-          if [[ "$BRANCH_NAME" == "main" ]]; then
+          if [[ "$BRANCH_NAME" == "$DEFAULT_BRANCH" ]]; then
             echo "alias=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
