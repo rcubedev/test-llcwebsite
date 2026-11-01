@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.limelightcreatives.site.content.SiteContent;
+import org.limelightcreatives.site.legal.LegalPage;
 import org.limelightcreatives.site.legal.LegalPages;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,8 +36,12 @@ class SitePagesTest {
     void all_PagesExist_ReturnsAllPages() {
         when(this.legal.all()).thenReturn(List.of());
 
-        assertEquals(1, this.pages.all().size());
-        assertEquals(this.pages.home(), this.pages.all().getFirst());
+        List<Page> pages = this.pages.all();
+
+        assertEquals(3, pages.size());
+        assertEquals(this.pages.home(), pages.getFirst());
+        assertEquals(this.pages.notFound(), pages.get(1));
+        assertEquals(this.pages.internalServerError(), pages.get(2));
     }
 
     @Test
