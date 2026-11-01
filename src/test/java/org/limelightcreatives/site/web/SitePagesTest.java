@@ -4,10 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.limelightcreatives.site.content.SiteContent;
+import org.limelightcreatives.site.legal.LegalPages;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URI;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,16 +20,21 @@ class SitePagesTest {
     @Mock
     SiteContent site;
 
+    @Mock
+    LegalPages legal;
+
     private SitePages pages;
 
     @BeforeEach
     void setUp() {
         when(this.site.url()).thenReturn("https://limelightcreatives.org/");
-        this.pages = new SitePages(this.site);
+        this.pages = new SitePages(this.site, this.legal);
     }
 
     @Test
     void all_PagesExist_ReturnsAllPages() {
+        when(this.legal.all()).thenReturn(List.of());
+
         assertEquals(1, this.pages.all().size());
         assertEquals(this.pages.home(), this.pages.all().getFirst());
     }

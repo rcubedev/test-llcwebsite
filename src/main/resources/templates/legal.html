@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page(~{::main})}">
+    <body>
+        <main class="min-h-screen bg-[var(--background)]">
+            <header class="border-b-2 border-black px-6 pb-16 pt-28 md:px-16 md:pb-24 md:pt-40">
+                <div class="mx-auto w-full max-w-6xl">
+                    <h1 class="font-display text-[clamp(4rem,11vw,11rem)] leading-[0.8] tracking-[-0.07em]" th:text="${legal.title}">Title.</h1>
+
+                    <div th:if="${legal.introHtml != null or legal.lastUpdated != null}"
+                         class="mt-12 flex w-full flex-col gap-6 md:mt-16 md:flex-row md:items-start md:justify-between">
+                        <p th:if="${legal.introHtml}" class="max-w-2xl font-body text-lg leading-relaxed md:text-xl" th:utext="${legal.introHtml}">Intro</p>
+
+                        <p th:if="${legal.lastUpdated}" class="shrink-0 font-body text-sm uppercase tracking-[0.12em] text-black/60">
+                            Last updated
+                            <br>
+                            <span class="text-black" th:text="${legal.lastUpdated}">Date</span>
+                        </p>
+                    </div>
+                </div>
+            </header>
+
+            <article class="w-full px-6 py-12 md:px-16 md:py-20">
+                <div class="mx-auto w-full max-w-6xl">
+                    <section th:each="section : ${legal.sections}" th:id="${section.id}"
+                             class="border-b border-black/20 py-12 first:pt-0 md:py-16 scroll-mt-24">
+                        <div class="grid gap-8 md:grid-cols-[minmax(280px,1fr)_minmax(0,2fr)]">
+                            <h2 class="font-display text-4xl leading-none tracking-[-0.04em] md:text-5xl" th:text="${section.title}">Section</h2>
+
+                            <div class="font-body text-base leading-[1.8] md:text-lg" th:utext="${section.html}">Body</div>
+                        </div>
+                    </section>
+                </div>
+            </article>
+        </main>
+    </body>
+</html>

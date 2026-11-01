@@ -1,12 +1,15 @@
 package org.limelightcreatives.site.web;
 
 import org.limelightcreatives.site.content.SiteContent;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 
@@ -54,6 +57,17 @@ public class SiteController {
         return "index";
     }
 
+    @GetMapping("/{slug:[a-z0-9-]+}")
+    public String legal(@PathVariable String slug, Model model) {
+        LegalPageDefinition legal = this.pages.legal(slug)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        populateModel(legal.page(), model);
+        model.addAttribute("legal", legal.content());
+
+        return "legal";
+    }
+
     @GetMapping("/404")
     public String notFound(Model model) {
         Page notFound = this.pages.notFound();
@@ -63,8 +77,8 @@ public class SiteController {
 
     @GetMapping("/500")
     public String internalServerError(Model model) {
-        Page notFound = this.pages.internalServerError();
-        populateModel(notFound, model);
+        Page error = this.pages.internalServerError();
+        populateModel(error, model);
         return "error/500";
     }
 

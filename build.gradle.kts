@@ -40,6 +40,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
+    implementation("org.commonmark:commonmark:0.31.0")
+    implementation("org.commonmark:commonmark-ext-gfm-tables:0.31.0")
+    implementation("org.yaml:snakeyaml")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
