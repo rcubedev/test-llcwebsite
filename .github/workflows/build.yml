@@ -1,0 +1,41 @@
+name: Build
+
+on: [pull_request, push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version: 25
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build and Export Site
+        run: ./gradlew build exportSite
+
+      - name: Capture Build Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: website-jar
+          path: |
+            build/libs/*.jar
+            !build/libs/*-plain.jar
+          if-no-files-found: 'error'
+
+      - name: Capture Static Website
+        uses: actions/upload-artifact@v7
+        with:
+          name: website-static
+          path: build/site/
+          if-no-files-found: 'error'
