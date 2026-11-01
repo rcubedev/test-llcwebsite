@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page(~{::main})}">
+    <body>
+        <main>
+            <h1 class="font-display text-[clamp(4rem,11vw,11rem)] leading-[0.8] tracking-[-0.07em]">
+                Something went <span class="font-bold text-[var(--ontik-accent)]">wrong.</span>
+            </h1>
+            <p class="mt-8 max-w-md text-lg">
+                We're sorry, but something went wrong on our end. Please try again later.
+            </p>
+            <div class="mt-12">
+                <th:block th:replace="~{fragments/button :: button('/', 'BACK TO HOME', 'primary', '')}"></th:block>
+            </div>
+        </main>
+    </body>
+</html>
