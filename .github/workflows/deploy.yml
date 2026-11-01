@@ -12,12 +12,15 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
     runs-on: ubuntu-latest
+    name: Deploy to Cloudflare
     permissions:
       actions: read
       contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Download Static Website
         uses: actions/download-artifact@v7
@@ -47,6 +50,23 @@ jobs:
 
             echo "name=llc-website-${slug}-${hash}" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Cache node_modules
+        id: node_modules_cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.node_modules_cache.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v4
