@@ -20,6 +20,12 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
+      - name: Cache build-logic outputs
+        uses: actions/cache@v6
+        with:
+          path: build-logic/build
+          key: build-logic-${{ runner.os }}-${{ hashFiles('build-logic/src/**', 'build-logic/**/*.kts', '**/gradle.properties', 'gradle/wrapper/gradle-wrapper.properties') }}
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
