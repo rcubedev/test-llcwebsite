@@ -133,6 +133,17 @@ body.modal-open {
     .marquee-team {
         animation: none;
     }
+
+    .team-marquee-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+
+    .marquee-team > [aria-hidden="true"] {
+        display: none;
+    }
 }
 
 /* registration popup */

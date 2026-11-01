@@ -20,7 +20,8 @@
                     <svg th:replace="~{fragments/art :: sparkle('pointer-events-none absolute -top-10 right-4 h-14 w-10 rotate-[-16deg] text-[var(--foreground)] md:-top-20 md:right-34 md:h-16 md:w-12')}"></svg>
                     <svg th:replace="~{fragments/art :: sparkle('pointer-events-none absolute -top-10 right-4 h-14 w-10 rotate-[8deg] text-[var(--ontik-accent)] md:-top-24 md:right-10 md:h-20 md:w-14')}"></svg>
 
-                    <div class="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+                    <div tabindex="0" aria-label="Team members"
+                         class="team-marquee-container overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
                         <div data-marquee class="marquee-team flex w-max gap-6"
                              th:style="'--marquee-distance: ' + ${200 * #lists.size(site.team)} + 'px'">
                             <th:block th:each="copy : ${#numbers.sequence(1, 4)}">
