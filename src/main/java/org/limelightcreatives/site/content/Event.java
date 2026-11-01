@@ -9,9 +9,9 @@ import java.net.URI;
  * @param youtubeId the YouTube video identifier
  * @param filloutId the Fillout registration form identifier
  * @param contactEmail the event contact email address
- * @param parentsGuide the URI of the parents' and guardians' guide
+ * @param parentsGuide the URL of the parents' and guardians' guide
  */
-public record Event(String banner, String youtubeId, String filloutId, String contactEmail, URI parentsGuide) {
+public record Event(String banner, String youtubeId, String filloutId, String contactEmail, String parentsGuide) {
 
     /**
      * Returns the thumbnail URI for the event introduction video.

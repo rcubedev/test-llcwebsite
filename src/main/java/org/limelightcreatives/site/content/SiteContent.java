@@ -3,13 +3,12 @@ package org.limelightcreatives.site.content;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import java.net.URI;
 import java.util.List;
 
 /**
  * Website content.
  *
- * @param url the canonical website URI
+ * @param url the canonical website URL
  * @param event the event details
  * @param nav the homepage navigation links
  * @param keyDates the important event dates
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @ConfigurationProperties("site")
 public record SiteContent(
-        URI url,
+        String url,
         @NestedConfigurationProperty Event event,
         List<NavLink> nav,
         List<KeyDate> keyDates,

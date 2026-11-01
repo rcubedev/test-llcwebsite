@@ -4,9 +4,7 @@ import org.limelightcreatives.site.content.SiteContent;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Defines the pages available on the site and constructs their view models.
@@ -69,7 +67,8 @@ public class SitePages {
 
     private Page page(String path, boolean indexed, String title, String description) {
         URI pathUri = URI.create(path);
-        PageMeta meta = new PageMeta(title, description, this.site.url().resolve(pathUri), indexed);
+        URI url = URI.create(this.site.url()).resolve(pathUri);
+        PageMeta meta = new PageMeta(title, description, url, indexed);
 
         return new Page(pathUri, meta);
     }

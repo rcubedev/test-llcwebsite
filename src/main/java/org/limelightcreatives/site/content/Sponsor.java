@@ -1,12 +1,10 @@
 package org.limelightcreatives.site.content;
 
-import java.net.URI;
-
 /**
  * An event sponsor.
  *
  * @param name the sponsor's name
- * @param logo the sponsor's logo URI
- * @param link the sponsor's website URI
+ * @param logo the sponsor's logo path or URL
+ * @param link the sponsor's website URL
  */
-public record Sponsor(String name, URI logo, URI link) {}
+public record Sponsor(String name, String logo, String link) {}

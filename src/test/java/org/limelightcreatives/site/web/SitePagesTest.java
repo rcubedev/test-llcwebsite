@@ -22,7 +22,7 @@ class SitePagesTest {
 
     @BeforeEach
     void setUp() {
-        when(this.site.url()).thenReturn(URI.create("https://limelightcreatives.org/"));
+        when(this.site.url()).thenReturn("https://limelightcreatives.org/");
         this.pages = new SitePages(this.site);
     }
 

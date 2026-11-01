@@ -23,7 +23,7 @@ class CrawlerFilesTest {
 
     @Test
     void robotsTxt_ValidSiteUrl_IncludesSitemapUrl() {
-        when(this.site.url()).thenReturn(URI.create("https://limelightcreatives.org/"));
+        when(this.site.url()).thenReturn("https://limelightcreatives.org/");
 
         CrawlerFiles files = new CrawlerFiles(this.site, this.pages);
 

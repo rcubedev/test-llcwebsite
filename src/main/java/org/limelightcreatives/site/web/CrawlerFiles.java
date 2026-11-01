@@ -3,6 +3,7 @@ package org.limelightcreatives.site.web;
 import org.limelightcreatives.site.content.SiteContent;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,7 @@ public class CrawlerFiles {
                Allow: /
                
                Sitemap: %s
-               """.formatted(this.site.url().resolve("/sitemap.xml"));
+               """.formatted(URI.create(this.site.url()).resolve("/sitemap.xml"));
     }
 
     public String sitemapXml() {
