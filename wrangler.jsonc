@@ -1,9 +1,12 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "limelight-website",
+  "name": "llc-website",
+  "main": "./cloudflare/worker.js",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./build/site",
+    "binding": "ASSETS",
+    "run_worker_first": true,
     "not_found_handling": "404-page"
   }
 }
